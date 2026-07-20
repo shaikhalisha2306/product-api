@@ -17,6 +17,35 @@ router.get("/", (req, res) => {
 });
 
 
+// Get customer by ID
+router.get("/:id", (req, res) => {
+
+    fs.readFile(filePath, "utf8", (err, data) => {
+
+        if (err) {
+            return res.status(500).json({
+                message: "Error reading file"
+            });
+        }
+
+        const customers = JSON.parse(data);
+
+        const customer = customers.find(c => c.id === Number(req.params.id));
+
+        if (!customer) {
+            return res.status(404).json({
+                message: "Customer not found"
+            });
+        }
+
+        res.json(customer);
+
+    });
+
+});
+
+
+//add customer
 router.post("/", (req, res) => {
 
     fs.readFile(filePath, "utf8", (err, data) => {
